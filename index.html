@@ -525,54 +525,95 @@
             updateCartCount();
         });
 
-        function openLoginModal() {
-            const modal = document.getElementById('loginModal');
-            if (modal) {
-                modal.style.display = 'flex';
-                document.body.style.overflow = 'hidden';
-            }
+        if (password.length < 6) {
+            showMessage('registerForm', 'Пароль должен содержать минимум 6 символов', 'error');
+            return;
         }
 
-        // Функция для закрытия модального окна
-        function closeLoginModal() {
-            const modal = document.getElementById('loginModal');
-            if (modal) {
-                modal.style.display = 'none';
-                document.body.style.overflow = '';
-            }
-        }
+        // Симуляция процесса регистрации
+        submitBtn.textContent = 'Регистрация...';
+        submitBtn.disabled = true;
 
-        // Закрытие по клику вне окна
-        document.addEventListener('click', function(event) {
-            const modal = document.getElementById('loginModal');
-            if (event.target === modal) {
-                closeLoginModal();
-            }
-        });
-
-        // Закрытие по ESC
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                closeLoginModal();
-            }
-        });
-
-        // Обработка формы входа
-        document.getElementById('loginForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            const submitBtn = this.querySelector('.login-submit-btn');
-            submitBtn.textContent = 'Вход...';
-            submitBtn.disabled = true;
+        setTimeout(() => {
+            // Здесь должна быть реальная логика регистрации
+            console.log('Регистрация:', { name, email, phone, password });
+            showMessage('registerForm', 'Регистрация завершена успешно!', 'success');
 
             setTimeout(() => {
-                alert('Вход выполнен успешно!');
-                closeLoginModal();
-                submitBtn.textContent = 'Войти';
-                submitBtn.disabled = false;
+                this.reset();
+                closeRegisterModal();
+                openLoginModal();
+                showMessage('loginForm', 'Теперь вы можете войти в систему', 'success');
             }, 1500);
-        });
+
+        }, 2000);
+    });
+
+    // Обработка формы восстановления пароля
+    document.getElementById('forgotPasswordForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const email = document.getElementById('resetEmail').value;
+        const submitBtn = this.querySelector('.login-submit-btn');
+
+        // Валидация
+        if (!email) {
+            showMessage('forgotPasswordForm', 'Пожалуйста, введите email', 'error');
+            return;
+        }
+
+        // Симуляция процесса восстановления
+        submitBtn.textContent = 'Отправка...';
+        submitBtn.disabled = true;
+
+        setTimeout(() => {
+            // Здесь должна быть реальная логика восстановления
+            console.log('Восстановление пароля для:', email);
+            showMessage('forgotPasswordForm', 'Ссылка для восстановления пароля отправлена на ваш email', 'success');
+
+            setTimeout(() => {
+                this.reset();
+                closeForgotPasswordModal();
+                openLoginModal();
+            }, 2000);
+
+        }, 1500);
+    });
+
+    // Вспомогательные функции
+    function showMessage(formId, message, type) {
+        const form = document.getElementById(formId);
+        let messageDiv = form.querySelector('.form-message');
+
+        if (!messageDiv) {
+            messageDiv = document.createElement('div');
+            messageDiv.className = 'form-message';
+            form.insertBefore(messageDiv, form.firstChild);
+        }
+
+        messageDiv.textContent = message;
+        messageDiv.className = form-message ${type};
+
+        setTimeout(() => {
+            messageDiv.remove();
+        }, 5000);
+    }
+
+    function updateUserInterface(email) {
+        // Обновляем ссылку "Войти" на имя пользователя
+        const loginLink = document.querySelector('.nav-links a[href="login.html"]');
+        if (loginLink) {
+            const userName = email.split('@')[0];
+            loginLink.textContent = userName;
+            loginLink.href = '#';
+            loginLink.onclick = function() {
+                alert(Вы вошли как ${userName} (${email}));
+                return false;
+            };
+        }
+    }
     </script>
 </body>
 
 </html>
+
