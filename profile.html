@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Личный кабинет</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        .header {
+            background-color: #fff;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .promo-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 12px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2c3e50;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #495057;
+            font-size: 15px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #007bff;
+        }
+
+        .profile-container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+        }
+
+        /* Боковая панель профиля */
+        .profile-sidebar {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            height: fit-content;
+        }
+
+        .avatar-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .avatar-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .user-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #e9ecef;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+        .user-avatar:hover {
+            border-color: #007bff;
+        }
+
+        .avatar-upload {
+            display: none;
+        }
+
+        .change-avatar-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .change-avatar-btn:hover {
+            background: #0056b3;
+        }
+
+        .username-section {
+            margin-bottom: 30px;
+        }
+
+        .username-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+            text-align: center;
+            transition: border-color 0.3s;
+        }
+
+        .username-input:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        .profile-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            padding: 20px 0;
+            border-top: 1px solid #e9ecef;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        /* Основное содержание */
+        .profile-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .profile-section {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .view-all {
+            font-size: 14px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .view-all:hover {
+            text-decoration: underline;
+        }
+
+        /* История заказов */
+        .orders-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+
+        .order-item:hover {
+            background: #f8f9fa;
+        }
+
+        .order-info {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .order-number {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .order-date {
+            font-size: 14px;
+            color: #6c757d;
+        }
+
+        .order-status {
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-completed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-processing {
+            background: #cce7ff;
+            color: #004085;
+        }
+
+        .order-amount {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        /* Избранные товары */
+        .favorites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .favorite-item {
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .favorite-item img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .favorite-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .favorite-price {
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        /* Настройки */
+        .settings-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #007bff;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .profile-container {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-top {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="promo-banner">
+            🎁 Действующие акции - Скидки до 50% на все товары!
+        </div>
+        <nav class="nav-top">
+            <a href="index.html" class="logo">𝐸𝑎𝑠𝑦 𝐶𝑙𝑒𝑎𝑛</a>
+            <div class="nav-links">
+                <a href="#" onclick="openLoginModal(); return false;">Войти</a>
+                <a href="katalog.html">Каталог</a>
+                <a href="favorites.html">Избранное</a>
+                <a href="cart.html">Корзина <span id="cart-count" class="cart-count">0</span></a>
+                <a href="profile.html" style="color: #007bff; font-weight: bold;">Профиль</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="profile-container">
+        <!-- Боковая панель профиля -->
+        <div class="profile-sidebar">
+            <div class="avatar-section">
+                <div class="avatar-container">
+                    <img src="./images/user-photo.jpg" alt="Аватар" class="user-avatar" id="userAvatar">
+                    <input type="file" id="avatarUpload" class="avatar-upload" accept="image/*">
+                </div>
+                <button class="change-avatar-btn" onclick="document.getElementById('avatarUpload').click()">
+                    Сменить фото
+                </button>
+            </div>
+
+            <div class="username-section">
+                <input type="text" class="username-input" id="usernameInput" placeholder="Введите ваше имя" value="Алексей Петров">
+            </div>
+
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <div class="stat-number">12</div>
+                    <div class="stat-label">Заказов</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">8</div>
+                    <div class="stat-label">В избранном</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">2</div>
+                    <div class="stat-label">Бонуса</div>
+                </div>
+            </div>
+
+            <div class="profile-menu">
+                <div class="menu-item" style="padding: 10px 0; border-bottom: 1px solid #e9ecef; cursor: pointer;" onclick="location.href='cart.html'">
+                    📦 Мои заказы
+                </div>
+                <div class="menu-item" style="padding: 10px 0; border-bottom: 1px solid #e9ecef; cursor: pointer;" onclick="location.href='favorites.html'">
+                    ❤️ Избранное
+                </div>
+                <div class="menu-item" style="padding: 10px 0; border-bottom: 1px solid #e9ecef; cursor: pointer;">
+                    ⭐ Отзывы
+                </div>
+                <div class="menu-item" style="padding: 10px 0; border-bottom: 1px solid #e9ecef; cursor: pointer;">
+                    ⚙️ Настройки
+                </div>
+                <div class="menu-item" style="padding: 10px 0; cursor: pointer; color: #dc3545;" onclick="logout()">
+                    🚪 Выйти
+                </div>
+            </div>
+        </div>
+
+        <!-- Основное содержание -->
+        <div class="profile-content">
+            <!-- История заказов -->
+            <div class="profile-section">
+                <div class="section-title">
+                    История заказов
+                    <a href="#" class="view-all">Все заказы →</a>
+                </div>
+                <div class="orders-list">
+                    <div class="order-item">
+                        <div class="order-info">
+                            <div class="order-number">Заказ #12345</div>
+                            <div class="order-date">15 декабря 2024 • 3 товара</div>
+                        </div>
+                        <div class="order-details">
+                            <span class="order-status status-completed">Выполнен</span>
+                            <div class="order-amount">4 290 ₽</div>
+                        </div>
+                    </div>
+                    <div class="order-item">
+                        <div class="order-info">
+                            <div class="order-number">Заказ #12344</div>
+                            <div class="order-date">10 декабря 2024 • 2 товара</div>
+                        </div>
+                        <div class="order-details">
+                            <span class="order-status status-processing">В обработке</span>
+                            <div class="order-amount">2 150 ₽</div>
+                        </div>
+                    </div>
+                    <div class="order-item">
+                        <div class="order-info">
+                            <div class="order-number">Заказ #12343</div>
+                            <div class="order-date">5 декабря 2024 • 5 товаров</div>
+                        </div>
+                        <div class="order-details">
+                            <span class="order-status status-completed">Выполнен</span>
+                            <div class="order-amount">6 780 ₽</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Избранные товары -->
+            <div class="profile-section">
+                <div class="section-title">
+                    Избранные товары
+                    <a href="favorites.html" class="view-all">Все товары →</a>
+                </div>
+                <div id="profile-favorites-container" class="favorites-grid">
+                    <!-- Товары будут загружаться через JavaScript -->
+                </div>
+            </div>
+
+            <!-- Настройки уведомлений -->
+            <div class="profile-section">
+                <div class="section-title">
+                    Настройки уведомлений
+                </div>
+                <div class="settings-list">
+                    <div class="setting-item">
+                        <span>Email-уведомления</span>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <span>SMS-уведомления</span>
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <span>Уведомления о акциях</span>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <span>Новости компании</span>
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Загрузка аватарки
+        document.getElementById('avatarUpload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('userAvatar').src = e.target.result;
+                    // Здесь можно добавить отправку на сервер
+                    console.log('Аватарка загружена:', file.name);
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Сохранение имени пользователя
+        document.getElementById('usernameInput').addEventListener('blur', function() {
+            const newUsername = this.value.trim();
+            if (newUsername) {
+                // Здесь можно добавить сохранение на сервер
+                console.log('Имя пользователя изменено на:', newUsername);
+                alert('Имя успешно сохранено!');
+            }
+        });
+
+        // Enter для сохранения имени
+        document.getElementById('usernameInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                this.blur();
+            }
+        });
+
+        // Имитация данных
+        let orders = [
+            { id: 12345, date: '15.12.2024', items: 3, status: 'completed', amount: 4290 },
+            { id: 12344, date: '10.12.2024', items: 2, status: 'processing', amount: 2150 },
+            { id: 12343, date: '05.12.2024', items: 5, status: 'completed', amount: 6780 }
+        ];
+
+        // Обновление счетчика корзины (пример)
+        document.getElementById('cart-count').textContent = '3';
+
+
+        // Общие функции для навигации
+        function logout() {
+            if (confirm('Вы уверены, что хотите выйти?')) {
+                localStorage.removeItem('user');
+                alert('Вы успешно вышли из системы');
+                window.location.href = 'katalog.html';
+            }
+        }
+
+        // Функция для обновления интерфейса пользователя
+        function updateUserInterface(email) {
+            const loginLink = document.querySelector('.nav-links a[onclick*="openLoginModal"]');
+            if (loginLink && email) {
+                const userName = email.split('@')[0];
+                loginLink.textContent = userName;
+                loginLink.onclick = function() {
+                    window.location.href = 'profile.html';
+                    return false;
+                };
+
+                // Добавляем ссылку на профиль если её нет
+                const profileLink = document.querySelector('.nav-links a[href="profile.html"]');
+                if (!profileLink) {
+                    const newProfileLink = document.createElement('a');
+                    newProfileLink.href = 'profile.html';
+                    newProfileLink.textContent = 'Профиль';
+                    newProfileLink.style.color = '#007bff';
+                    newProfileLink.style.fontWeight = 'bold';
+                    loginLink.parentNode.appendChild(newProfileLink);
+                }
+            }
+        }
+
+        // Проверяем авторизацию при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = localStorage.getItem('user');
+            if (user) {
+                updateUserInterface(user);
+            }
+
+            // Обновляем счетчики
+            updateCartCount();
+            updateFavoritesIcons();
+        });
+
+        // Данные товаров (должны быть одинаковыми во всех файлах)
+        const productsData = {
+            "1": {
+                name: "Пылесос вертикальный для дома DX700 PRO",
+                price: 80,
+                image: "./images/DEERMA.jpg",
+                category: "пылесос"
+            },
+            "2": {
+                name: "Отпариватель ручной для одежды мощный 1500 Вт",
+                price: 36,
+                image: "./images/Aluram.jpg",
+                category: "отпариватель"
+            },
+            "3": {
+                name: "Увлажнитель воздуха для дома Н2",
+                price: 42,
+                image: "./images/Futula_Humidifier.jpg",
+                category: "увлажнитель"
+            },
+            "4": {
+                name: "Пароочиститель для уборки дома мощный 1,6л 2500 Вт",
+                price: 64,
+                image: "./images/Waps.jpg",
+                category: "пароочиститель"
+            },
+            "5": {
+                name: "Пылесос с контейнером Swift Power Cyclonic TW2947EA",
+                price: 188,
+                image: "./images/Tefal.jpg",
+                category: "пылесос"
+            },
+            "6": {
+                name: "Увлажнитель воздуха для дома 4 л",
+                price: 51,
+                image: "./images/Pioneer.jpg",
+                category: "увлажнитель"
+            },
+            "7": {
+                name: "Ручной отпариватель для одежды",
+                price: 30,
+                image: "./images/Osenjie.jpg",
+                category: "отпариватель"
+            },
+            "8": {
+                name: "Пароочиститель для дома и уборки мощный 3600вт 1,2л",
+                price: 108,
+                image: "./images/Noname.jpg",
+                category: "пароочиститель"
+            },
+            "9": {
+                name: "Робот пылесос с влажной и сухой уборкой",
+                price: 600,
+                image: "./images/Xiaomi.jpg",
+                category: "пылесос"
+            }
+        };
+
+        // Функция для получения избранного из localStorage
+        function getFavorites() {
+            const favorites = localStorage.getItem('favorites');
+            return favorites ? JSON.parse(favorites) : [];
+        }
+
+        // Функция для отображения избранных товаров в профиле
+        function renderProfileFavorites() {
+            const favorites = getFavorites();
+            const container = document.getElementById('profile-favorites-container');
+
+            if (favorites.length === 0) {
+                container.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #6c757d;">
+                        <div style="font-size: 48px; margin-bottom: 15px;">❤️</div>
+                        <h3 style="margin-bottom: 10px; color: #495057;">Нет избранных товаров</h3>
+                        <p>Добавляйте товары в избранное в каталоге</p>
+                        <a href="katalog.html" style="display: inline-block; margin-top: 15px; padding: 10px 20px; background: #007bff; color: white; text-decoration: none; border-radius: 6px;">Перейти в каталог</a>
+                    </div>
+                `;
+                return;
+            }
+
+            // Показываем только первые 3 товара
+            const displayFavorites = favorites.slice(0, 3);
+            let favoritesHTML = '';
+
+            displayFavorites.forEach(productId => {
+                const product = productsData[productId];
+                if (product) {
+                    favoritesHTML += `
+                        <div class="favorite-item">
+                            <img src="${product.image}" alt="${product.name}"
+                                 onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjBmMGYwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzY2NiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPuKGkCBGdG90bzwvdGV4dD48L3ZnPg=='">
+                            <div class="favorite-name">${product.name}</div>
+                            <div class="favorite-price">${product.price}₽/час</div>
+                            <button class="add-to-cart"
+                                    style="width: 100%; margin-top: 10px; padding: 8px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;"
+                                    onclick="addToCartFromProfile('${productId}')">
+                                В корзину
+                            </button>
+                        </div>
+                    `;
+                }
+            });
+
+            container.innerHTML = favoritesHTML;
+
+            // Обновляем счетчик в статистике
+            updateFavoritesCount(favorites.length);
+        }
+
+        // Функция для добавления товара в корзину из профиля
+        function addToCartFromProfile(productId) {
+            const product = productsData[productId];
+            if (product) {
+                const cart = getCart();
+                const existingItem = cart.find(item => item.id === productId);
+
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    cart.push({
+                        id: productId,
+                        name: product.name,
+                        price: product.price,
+                        quantity: 1
+                    });
+                }
+
+                saveCart(cart);
+
+                // Анимация кнопки
+                const button = event.target;
+                const originalText = button.textContent;
+                button.textContent = 'Добавлено!';
+                button.style.background = '#20c997';
+
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = '';
+                }, 1000);
+            }
+        }
+
+        // Функция для обновления счетчика избранного в статистике
+        function updateFavoritesCount(count) {
+            const favoritesStat = document.querySelector('.stat-item:nth-child(2) .stat-number');
+            if (favoritesStat) {
+                favoritesStat.textContent = count;
+            }
+        }
+
+        // Функции для работы с корзиной (добавьте их если нет)
+        function getCart() {
+            const cart = localStorage.getItem('cart');
+            return cart ? JSON.parse(cart) : [];
+        }
+
+        function saveCart(cart) {
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+        }
+
+        function updateCartCount() {
+            const cart = getCart();
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const cartCountElement = document.getElementById('cart-count');
+            if (cartCountElement) {
+                cartCountElement.textContent = totalItems;
+            }
+        }
+
+        // Обновляем инициализацию при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCartCount();
+            renderProfileFavorites(); // Добавляем эту строку
+
+            // Имитация данных
+            let orders = [
+                { id: 12345, date: '15.12.2024', items: 3, status: 'completed', amount: 4290 },
+                { id: 12344, date: '10.12.2024', items: 2, status: 'processing', amount: 2150 },
+                { id: 12343, date: '05.12.2024', items: 5, status: 'completed', amount: 6780 }
+            ];
+        });
+    </script>
+</body>
+</html>

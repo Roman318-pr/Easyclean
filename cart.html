@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Корзина - Интернет-магазин Easy Clean</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        /* Стили для шапки - идентичные katalog.html */
+        .header {
+            background-color: #fff;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .promo-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 12px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2c3e50;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #495057;
+            font-size: 15px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #007bff;
+        }
+
+        .search-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 20px;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .cart-count {
+            background: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+
+        /* Остальные стили остаются без изменений */
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: 30px;
+        }
+
+        /* Стили для корзины */
+        .cart-items {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            gap: 20px;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-image {
+            width: 80px;
+            height: 80px;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 12px;
+            text-align: center;
+            object-fit: cover;
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+
+        .item-price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+
+        .quantity-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .quantity {
+            min-width: 30px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .item-total {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+            min-width: 100px;
+            text-align: right;
+        }
+
+        .remove-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background 0.3s;
+        }
+
+        .remove-btn:hover {
+            background: #c82333;
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 50px 20px;
+            color: #6c757d;
+        }
+
+        .empty-cart-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        /* Стили для доставки и заказа */
+        .delivery {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+
+        .delivery h3 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .delivery input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .delivery input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .order-summary {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+
+        .total {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 15px 0;
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        .order-button {
+            width: 100%;
+            padding: 15px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-weight: 600;
+        }
+
+        .order-button:hover {
+            background: #0056b3;
+        }
+
+        /* Стили для блока "Недавно просмотренные" */
+        .recently-viewed {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .recently-viewed h3 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        .recent-products {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .recent-product {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            padding: 15px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .recent-product:hover {
+            border-color: #007bff;
+            background-color: #f8f9fa;
+            transform: translateY(-2px);
+        }
+
+        .recent-product-image {
+            width: 50px;
+            height: 50px;
+            background-color: #f0f0f0;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .recent-categories {
+            margin-top: 20px;
+        }
+
+        .recent-categories h4 {
+            margin-bottom: 15px;
+            color: #495057;
+            font-size: 16px;
+        }
+
+        .category-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .category-tag {
+            display: inline-block;
+            background: #e9ecef;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #495057;
+        }
+
+        .category-tag:hover {
+            background: #007bff;
+            color: white;
+        }
+
+        /* Футер - идентичный katalog.html */
+        .footer {
+            background: #2c3e50;
+            color: white;
+            margin-top: 50px;
+            padding: 40px 0 20px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 30px;
+        }
+
+        .footer-column h4 {
+            margin-bottom: 20px;
+            font-size: 16px;
+            color: #ecf0f1;
+        }
+
+        .footer-column a {
+            display: block;
+            color: #bdc3c7;
+            text-decoration: none;
+            margin-bottom: 10px;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .footer-column a:hover {
+            color: #3498db;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .social-links a {
+            width: 36px;
+            height: 36px;
+            background: #34495e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: white;
+            transition: background 0.3s;
+        }
+
+        .social-links a:hover {
+            background: #3498db;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #34495e;
+            color: #95a5a6;
+            font-size: 14px;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-window {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: modalAppear 0.3s ease-out;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes modalAppear {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -60%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #6c757d;
+            transition: color 0.3s;
+            z-index: 1;
+        }
+
+        .close-btn:hover {
+            color: #2c3e50;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 14px;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="password"],
+        .form-group input[type="tel"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+        }
+
+        .form-group input[type="checkbox"] {
+            margin-right: 8px;
+        }
+
+        .login-submit-btn {
+            width: 100%;
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+
+        .login-submit-btn:hover {
+            background: #0056b3;
+        }
+
+        .login-submit-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+
+        .login-links {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .login-links a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .login-links a:hover {
+            text-decoration: underline;
+        }
+
+
+        /* Адаптивность */
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .nav-links {
+                gap: 15px;
+            }
+
+            .cart-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .quantity-controls {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка сайта - идентичная katalog.html -->
+    <header class="header">
+        <div class="promo-banner">
+            🎁 Действующие акции - Скидки до 50% на все товары!
+        </div>
+        <nav class="nav-top">
+            <a href="index.html" class="logo">𝐸𝑎𝑠𝑦 𝐶𝑙𝑒𝑎𝑛</a>
+            <div class="nav-links">
+                <a href="#" onclick="openLoginModal(); return false;">Войти</a>
+                <a href="katalog.html">Каталог</a>
+                <a href="favorites.html">Избранное</a>
+                <a href="cart.html">Корзина <span id="cart-count" class="cart-count">0</span></a>
+                <a href="profile.html">Профиль</a>
+            </div>
+        </nav>
+
+    </header>
+
+    <!-- Основной контент -->
+    <div class="container">
+        <div class="main-content">
+            <!-- Корзина -->
+            <div id="cart-container">
+                <!-- Корзина будет заполняться через JavaScript -->
+            </div>
+
+            <!-- Способ доставки -->
+            <div class="delivery">
+                <h3>Способ доставки</h3>
+                <input type="text" placeholder="Адрес доставки">
+                <input type="text" placeholder="Дата и время получения">
+                <input type="text" placeholder="Контактный телефон">
+            </div>
+
+            <!-- Итоговая сумма и кнопка заказа -->
+            <div class="order-summary">
+                <div class="total" id="totalAmount">Итого: 0 ₽</div>
+                <button class="order-button" onclick="checkout()">Оформить заказ</button>
+            </div>
+        </div>
+
+        <!-- Боковая панель с недавно просмотренными товарами -->
+        <div class="recently-viewed">
+            <h3>Недавно просмотренные товары</h3>
+            <div class="recent-products">
+                <div class="recent-product" data-category="robot-vacuums">
+                    <div class="recent-product-image">🤖</div>
+                    <span>Робот-пылесос Samsung</span>
+                </div>
+                <div class="recent-product" data-category="steam-cleaners">
+                    <div class="recent-product-image">💨</div>
+                    <span>Пароочиститель Philips</span>
+                </div>
+                <div class="recent-product" data-category="dishwashers">
+                    <div class="recent-product-image">🍽️</div>
+                    <span>Посудомоечная машина Bosch</span>
+                </div>
+            </div>
+
+            <div class="recent-categories">
+                <h4>Просмотренные категории</h4>
+                <div class="category-tags">
+                    <span class="category-tag" data-category="robot-vacuums">Роботы-пылесосы</span>
+                    <span class="category-tag" data-category="vertical-vacuums">Вертикальные пылесосы</span>
+                    <span class="category-tag" data-category="washing-vacuums">Моющие пылесосы</span>
+                    <span class="category-tag" data-category="steam-cleaners">Пароочистители</span>
+                    <span class="category-tag" data-category="floor-washing">Поломоечные машины</span>
+                    <span class="category-tag" data-category="dishwashers">Посудомоечные машины</span>
+                    <span class="category-tag" data-category="air-cleaners">Очистители воздуха</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h4>О компании</h4>
+                <a href="#">О нас</a>
+                <a href="#">Контакты</a>
+                <a href="#">Вакансии</a>
+                <a href="#">Партнеры</a>
+            </div>
+            <div class="footer-column">
+                <h4>Поддержка</h4>
+                <a href="#">Центр поддержки</a>
+                <a href="#">Сообщить о проблеме</a>
+                <a href="#">Статус заказа</a>
+                <a href="#">Возвраты</a>
+            </div>
+            <div class="footer-column">
+                <h4>FAQ</h4>
+                <a href="#">Частые вопросы</a>
+                <a href="#">Доставка</a>
+                <a href="#">Оплата</a>
+                <a href="#">Гарантия</a>
+            </div>
+            <div class="footer-column">
+                <h4>Покупателю</h4>
+                <a href="#">Акции</a>
+                <a href="#">Бонусная программа</a>
+                <a href="#">Подарочные карты</a>
+                <a href="#">Рассрочка</a>
+            </div>
+            <div class="footer-column">
+                <h4>Наши социальные сети</h4>
+                <div class="social-links">
+                    <a href="#">VK</a>
+                    <a href="#">TG</a>
+                    <a href="#">YT</a>
+                    <a href="#">IG</a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2025 Интернет-магазин Easy Clean. Все права защищены.
+        </div>
+    </footer>
+
+    <div id="loginModal" class="modal-overlay">
+        <div class="modal-window">
+            <button class="close-btn" onclick="closeLoginModal()">&times;</button>
+            <h2 style="text-align: center; margin-bottom: 20px; color: #2c3e50;">Вход в аккаунт</h2>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required placeholder="Введите ваш email">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Пароль:</label>
+                    <input type="password" id="password" name="password" required placeholder="Введите пароль">
+                </div>
+
+                <button type="submit" class="login-submit-btn">Войти</button>
+
+                <div class="login-links">
+                    <a href="#" onclick="openForgotPasswordModal(); return false;">Забыли пароль?</a>
+                    <span style="margin: 0 10px; color: #6c757d;">|</span>
+                    <a href="#" onclick="openRegisterModal(); return false;">Регистрация</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно регистрации -->
+    <div id="registerModal" class="modal-overlay">
+        <div class="modal-window">
+            <button class="close-btn" onclick="closeRegisterModal()">&times;</button>
+            <h2 style="text-align: center; margin-bottom: 20px; color: #2c3e50;">Регистрация</h2>
+
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="regName">Имя:</label>
+                    <input type="text" id="regName" name="name" required placeholder="Введите ваше имя">
+                </div>
+
+                <div class="form-group">
+                    <label for="regEmail">Email:</label>
+                    <input type="email" id="regEmail" name="email" required placeholder="Введите ваш email">
+                </div>
+
+                <div class="form-group">
+                    <label for="regPhone">Телефон:</label>
+                    <input type="tel" id="regPhone" name="phone" required placeholder="+7 (XXX) XXX-XX-XX">
+                </div>
+
+                <div class="form-group">
+                    <label for="regPassword">Пароль:</label>
+                    <input type="password" id="regPassword" name="password" required placeholder="Придумайте пароль">
+                </div>
+
+                <div class="form-group">
+                    <label for="regConfirmPassword">Подтвердите пароль:</label>
+                    <input type="password" id="regConfirmPassword" name="confirmPassword" required placeholder="Повторите пароль">
+                </div>
+
+                <div class="form-group">
+                    <label style="font-weight: normal; font-size: 14px;">
+                        <input type="checkbox" required>
+                        Я соглашаюсь с <a href="#" style="color: #007bff;">правилами использования</a> и
+                        <a href="#" style="color: #007bff;">политикой конфиденциальности</a>
+                    </label>
+                </div>
+
+                <button type="submit" class="login-submit-btn">Зарегистрироваться</button>
+
+                <div class="login-links">
+                    <a href="#" onclick="openLoginModal(); return false;">Уже есть аккаунт? Войти</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно восстановления пароля -->
+    <div id="forgotPasswordModal" class="modal-overlay">
+        <div class="modal-window">
+            <button class="close-btn" onclick="closeForgotPasswordModal()">&times;</button>
+            <h2 style="text-align: center; margin-bottom: 20px; color: #2c3e50;">Восстановление пароля</h2>
+
+            <form id="forgotPasswordForm">
+                <div class="form-group">
+                    <label for="resetEmail">Email:</label>
+                    <input type="email" id="resetEmail" name="email" required placeholder="Введите ваш email">
+                    <p style="font-size: 12px; color: #6c757d; margin-top: 5px;">
+                        На указанный email будет отправлена ссылка для восстановления пароля
+                    </p>
+                </div>
+
+                <button type="submit" class="login-submit-btn">Восстановить пароль</button>
+
+                <div class="login-links">
+                    <a href="#" onclick="openLoginModal(); return false;">Вернуться к входу</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Функция для получения корзины из localStorage
+        function getCart() {
+            const cart = localStorage.getItem('cart');
+            return cart ? JSON.parse(cart) : [];
+        }
+
+        // Функция для сохранения корзины в localStorage
+        function saveCart(cart) {
+            localStorage.setItem('cart', JSON.stringify(cart));
+            renderCart();
+            updateCartCount();
+        }
+
+        // Функция для обновления счетчика корзины
+        function updateCartCount() {
+            const cart = getCart();
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const cartCountElement = document.getElementById('cart-count');
+            if (cartCountElement) {
+                cartCountElement.textContent = totalItems;
+            }
+        }
+
+        // Функция для изменения количества товара
+        function updateQuantity(productId, change) {
+            const cart = getCart();
+            const item = cart.find(item => item.id === productId);
+
+            if (item) {
+                item.quantity += change;
+
+                if (item.quantity <= 0) {
+                    // Удаляем товар, если количество стало 0 или меньше
+                    const itemIndex = cart.findIndex(item => item.id === productId);
+                    cart.splice(itemIndex, 1);
+                }
+
+                saveCart(cart);
+            }
+        }
+
+        // Функция для удаления товара из корзины
+        function removeFromCart(productId) {
+            const cart = getCart();
+            const itemIndex = cart.findIndex(item => item.id === productId);
+
+            if (itemIndex !== -1) {
+                cart.splice(itemIndex, 1);
+                saveCart(cart);
+            }
+        }
+
+        // Функция для отображения корзины
+        function renderCart() {
+            const cart = getCart();
+            const cartContainer = document.getElementById('cart-container');
+
+            if (cart.length === 0) {
+                cartContainer.innerHTML = `
+                    <div class="empty-cart">
+                        <div class="empty-cart-icon">🛒</div>
+                        <h2>Корзина пуста</h2>
+                        <p>Добавьте товары из магазина</p>
+                        <a href="katalog.html" style="display: inline-block; margin-top: 20px; padding: 10px 20px; background: #007bff; color: white; text-decoration: none; border-radius: 6px;">Перейти в каталог</a>
+                    </div>
+                `;
+                document.getElementById('totalAmount').textContent = 'Итого: 0 ₽';
+                return;
+            }
+
+            let total = 0;
+            let itemsHTML = '';
+
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+
+                itemsHTML += `
+                    <div class="cart-item">
+                        <div class="item-image">Товар ${item.id}</div>
+                        <div class="item-details">
+                            <div class="item-name">${item.name}</div>
+                            <div class="item-price">${item.price} ₽/час</div>
+                        </div>
+                        <div class="quantity-controls">
+                            <button class="quantity-btn" onclick="updateQuantity('${item.id}', -1)">-</button>
+                            <span class="quantity">${item.quantity}</span>
+                            <button class="quantity-btn" onclick="updateQuantity('${item.id}', 1)">+</button>
+                        </div>
+                        <div class="item-total">${itemTotal} ₽</div>
+                        <button class="remove-btn" onclick="removeFromCart('${item.id}')">Удалить</button>
+                    </div>
+                `;
+            });
+
+            cartContainer.innerHTML = `
+                <div class="cart-items">
+                    ${itemsHTML}
+                </div>
+            `;
+            document.getElementById('totalAmount').textContent = `Итого: ${total} ₽`;
+        }
+
+        // Функции для модальных окон
+    function openLoginModal() {
+        closeAllModals();
+        const modal = document.getElementById('loginModal');
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeLoginModal() {
+        const modal = document.getElementById('loginModal');
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+
+    function openRegisterModal() {
+        closeAllModals();
+        const modal = document.getElementById('registerModal');
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeRegisterModal() {
+        const modal = document.getElementById('registerModal');
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+
+    function openForgotPasswordModal() {
+        closeAllModals();
+        const modal = document.getElementById('forgotPasswordModal');
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeForgotPasswordModal() {
+        const modal = document.getElementById('forgotPasswordModal');
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+
+    function closeAllModals() {
+        closeLoginModal();
+        closeRegisterModal();
+        closeForgotPasswordModal();
+    }
+
+    // Закрытие по клику вне окна
+    document.addEventListener('click', function(event) {
+        const modals = document.querySelectorAll('.modal-overlay');
+        modals.forEach(modal => {
+            if (event.target === modal) {
+                closeAllModals();
+            }
+        });
+    });
+
+    // Закрытие по ESC
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeAllModals();
+        }
+    });
+
+    // Обработка формы входа
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const submitBtn = this.querySelector('.login-submit-btn');
+
+        // Валидация
+        if (!email || !password) {
+            showMessage('loginForm', 'Пожалуйста, заполните все поля', 'error');
+            return;
+        }
+
+        // Симуляция процесса входа
+        submitBtn.textContent = 'Вход...';
+        submitBtn.disabled = true;
+
+        setTimeout(() => {
+            // Здесь должна быть реальная логика входа
+            console.log('Попытка входа:', { email, password });
+            showMessage('loginForm', 'Вход выполнен успешно!', 'success');
+
+            setTimeout(() => {
+                localStorage.setItem('user', email);
+                this.reset();
+                closeLoginModal();
+                submitBtn.textContent = 'Войти';
+                submitBtn.disabled = false;
+                updateUserInterface(email);
+            }, 1000);
+
+        }, 1500);
+    });
+
+    // Обработка формы регистрации
+    document.getElementById('registerForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const name = document.getElementById('regName').value;
+        const email = document.getElementById('regEmail').value;
+        const phone = document.getElementById('regPhone').value;
+        const password = document.getElementById('regPassword').value;
+        const confirmPassword = document.getElementById('regConfirmPassword').value;
+        const submitBtn = this.querySelector('.login-submit-btn');
+
+        // Валидация
+        if (!name || !email || !phone || !password || !confirmPassword) {
+            showMessage('registerForm', 'Пожалуйста, заполните все поля', 'error');
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            showMessage('registerForm', 'Пароли не совпадают', 'error');
+            return;
+        }
+
+        if (password.length < 6) {
+            showMessage('registerForm', 'Пароль должен содержать минимум 6 символов', 'error');
+            return;
+        }
+
+        // Симуляция процесса регистрации
+        submitBtn.textContent = 'Регистрация...';
+        submitBtn.disabled = true;
+
+        setTimeout(() => {
+            // Здесь должна быть реальная логика регистрации
+            console.log('Регистрация:', { name, email, phone, password });
+            showMessage('registerForm', 'Регистрация завершена успешно!', 'success');
+
+            setTimeout(() => {
+                this.reset();
+                closeRegisterModal();
+                openLoginModal();
+                showMessage('loginForm', 'Теперь вы можете войти в систему', 'success');
+            }, 1500);
+
+        }, 2000);
+    });
+
+    // Обработка формы восстановления пароля
+    document.getElementById('forgotPasswordForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const email = document.getElementById('resetEmail').value;
+        const submitBtn = this.querySelector('.login-submit-btn');
+
+        // Валидация
+        if (!email) {
+            showMessage('forgotPasswordForm', 'Пожалуйста, введите email', 'error');
+            return;
+        }
+
+        // Симуляция процесса восстановления
+        submitBtn.textContent = 'Отправка...';
+        submitBtn.disabled = true;
+
+        setTimeout(() => {
+            // Здесь должна быть реальная логика восстановления
+            console.log('Восстановление пароля для:', email);
+            showMessage('forgotPasswordForm', 'Ссылка для восстановления пароля отправлена на ваш email', 'success');
+
+            setTimeout(() => {
+                this.reset();
+                closeForgotPasswordModal();
+                openLoginModal();
+            }, 2000);
+
+        }, 1500);
+    });
+
+        // Функция оформления заказа
+        function checkout() {
+            const cart = getCart();
+            if (cart.length === 0) {
+                alert('Корзина пуста!');
+                return;
+            }
+
+            if (confirm('Подтвердить оформление заказа?')) {
+                localStorage.removeItem('cart');
+                alert('Заказ успешно оформлен! С вами свяжутся для подтверждения деталей.');
+                renderCart();
+            }
+        }
+
+        // Обработчики для недавно просмотренных товаров
+        document.querySelectorAll('.recent-product').forEach(item => {
+            item.addEventListener('click', function() {
+                const category = this.getAttribute('data-category');
+                alert(`Переход к товару из категории: ${getCategoryName(category)}`);
+            });
+        });
+
+        // Обработчики для категорий
+        document.querySelectorAll('.category-tag').forEach(tag => {
+            tag.addEventListener('click', function() {
+                const category = this.getAttribute('data-category');
+                alert(`Переход к категории: ${getCategoryName(category)}`);
+            });
+        });
+
+        // Функция для получения названия категории
+        function getCategoryName(category) {
+            const categories = {
+                'robot-vacuums': 'Роботы-пылесосы',
+                'vertical-vacuums': 'Вертикальные пылесосы',
+                'washing-vacuums': 'Моющие пылесосы',
+                'steam-cleaners': 'Пароочистители',
+                'floor-washing': 'Поломоечные машины',
+                'dishwashers': 'Посудомоечные машины',
+                'air-cleaners': 'Очистители воздуха'
+            };
+            return categories[category] || category;
+        }
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            renderCart();
+        });
+    </script>
+</body>
+</html>

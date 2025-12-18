@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>О нас | Техника в аренду</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+            margin-bottom: 40px;
+        }
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+        }
+        header p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #1a3a8f;
+            margin-bottom: 20px;
+            border-left: 5px solid #2a5bd7;
+            padding-left: 15px;
+        }
+        .intro {
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .feature {
+            background: #f0f5ff;
+            padding: 20px;
+            border-radius: 10px;
+            border-top: 4px solid #2a5bd7;
+        }
+        .feature h3 {
+            color: #1a3a8f;
+            margin-bottom: 10px;
+        }
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+        .stat-item {
+            margin: 15px;
+        }
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+        .team-photo {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+        .cta {
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+        }
+        .cta h2 {
+            color: white;
+            border: none;
+        }
+        .cta-button {
+            display: inline-block;
+            background: #ffcc00;
+            color: #1a3a8f;
+            padding: 15px 35px;
+            margin-top: 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: 0.3s;
+        }
+        .cta-button:hover {
+            background: #ffd633;
+            transform: scale(1.05);
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 40px;
+        }
+        @media (max-width: 768px) {
+            header h1 { font-size: 2rem; }
+            .features { grid-template-columns: 1fr; }
+            .stats { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Мы делаем аренду техники простой, выгодной и безопасной</h1>
+        <p>Надёжные решения для бизнеса и частных клиентов с 2016 года</p>
+    </header>
+
+    <div class="container">
+        <section>
+            <h2>О нашей компании</h2>
+            <p class="intro">
+                Наша компания уже <strong>9 лет</strong> помогает строительным фирмам, производственным предприятиям и частным клиентам решать задачи любой сложности с помощью современной профессиональной техники. Мы предлагаем проверенное оборудование от ведущих мировых производителей, готовое к работе сразу после заказа.
+            </p>
+            <p>
+                Наш девиз — <strong>“Арендуй без забот”</strong>. Мы взяли на себя все сложности обслуживания, ремонта и логистики, чтобы вы могли сосредоточиться на своих проектах.
+            </p>
+        </section>
+
+        <section>
+            <h2>Наши преимущества</h2>
+            <div class="features">
+                <div class="feature">
+                    <h3>✅ Гарантия качества</h3>
+                    <p>Вся техника проходит регулярное ТО и диагностику. Каждая единица проходит 25-точечную проверку перед выдачей.</p>
+                </div>
+                <div class="feature">
+                    <h3>✅ Гибкие условия</h3>
+                    <p>Аренда от нескольких часов до долгосрочных проектов. Возможность срочной доставки в день заказа.</p>
+                </div>
+                <div class="feature">
+                    <h3>✅ Прозрачность</h3>
+                    <p>Никаких скрытых платежей. Полная документальная поддержка (договоры, акты, отчёты).</p>
+                </div>
+                <div class="feature">
+                    <h3>✅ Экспертные консультации</h3>
+                    <p>Поможем подобрать технику под ваши задачи, рассчитаем стоимость и оптимизируем сроки аренды.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number">9 лет</div>
+                <div>на рынке аренды</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">420+</div>
+                <div>единиц техники</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">3 850+</div>
+                <div>довольных клиентов</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">24/7</div>
+                <div>техподдержка</div>
+            </div>
+        </div>
+
+        <section>
+            <h2>Наша команда</h2>
+            <p>За нашими услугами стоят опытные инженеры, логисты и менеджеры, которые любят свою работу и знают технику до винтика.</p>
+            <img src="" class="team-photo">
+            <p style="margin-top: 15px; font-style: italic;">Мы ценим ваше время и доверие. Наша цель — стать вашим надёжным партнёром, который всегда на связи и готов помочь.</p>
+        </section>
+
+        <section class="cta">
+            <h2>Готовы начать?</h2>
+            <p>Выберите технику в каталоге или позвоните нам — подберём оптимальное решение уже через 10 минут!</p>
+            <a href="katalog.html" class="cta-button">Перейти в каталог</a>
+            <p style="margin-top: 20px;">Или позвоните: <strong style="font-size: 1.3rem;">8 (800) 350-00-00</strong></p>
+        </section>
+    </div>
+
+    <footer>
+        <p>© 2025 «ТехноАренда». Все права защищены.</p>
+        <p>г. Москва, ул. Промышленная, 15 | contact@tech-arenda.ru</p>
+    </footer>
+</body>
+</html>

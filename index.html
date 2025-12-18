@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Easy Clean - Аренда техники для уборки</title>
+    <style>
+        /* Стили как в katalog.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        .header {
+            background-color: #fff;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .promo-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 12px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2c3e50;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #495057;
+            font-size: 15px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #007bff;
+        }
+
+        .cart-count {
+            background: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+
+        /* Hero section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 30px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 18px;
+            transition: transform 0.3s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Features */
+        .features {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .feature {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .feature h3 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-window {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+            animation: modalAppear 0.3s ease-out;
+        }
+
+        @keyframes modalAppear {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #6c757d;
+            transition: color 0.3s;
+            z-index: 1;
+        }
+
+        .close-btn:hover {
+            color: #2c3e50;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+        }
+
+        .login-submit-btn {
+            width: 100%;
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+
+        .login-submit-btn:hover {
+            background: #0056b3;
+        }
+
+        .login-submit-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+
+        .login-links {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .login-links a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .login-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        .footer {
+            background: #2c3e50;
+            color: white;
+            margin-top: 50px;
+            padding: 40px 0 20px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 30px;
+        }
+
+        .footer-column h4 {
+            margin-bottom: 20px;
+            font-size: 16px;
+            color: #ecf0f1;
+        }
+
+        .footer-column a {
+            display: block;
+            color: #bdc3c7;
+            text-decoration: none;
+            margin-bottom: 10px;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .footer-column a:hover {
+            color: #3498db;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .social-links a {
+            width: 36px;
+            height: 36px;
+            background: #34495e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: white;
+            transition: background 0.3s;
+        }
+
+        .social-links a:hover {
+            background: #3498db;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #34495e;
+            color: #95a5a6;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="promo-banner">
+            🎁 Действующие акции - Скидки до 50% на все товары!
+        </div>
+        <nav class="nav-top">
+            <a href="index.html" class="logo">𝐸𝑎𝑠𝑦 𝐶𝑙𝑒𝑎𝑛</a>
+            <div class="nav-links">
+                <a href="#" onclick="openLoginModal(); return false;">Войти</a>
+                <a href="katalog.html">Каталог</a>
+                <a href="favorites.html">Избранное</a>
+                <a href="cart.html">Корзина <span id="cart-count" class="cart-count">0</span></a>
+                <a href="profile.html">Профиль</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Аренда техники для уборки</h1>
+        <p>Современная техника для идеальной чистоты в вашем доме</p>
+        <a href="katalog.html" class="cta-button">Смотреть каталог</a>
+    </section>
+
+    <section class="features">
+        <div class="feature">
+            <div class="feature-icon">🚀</div>
+            <h3>Быстрая доставка</h3>
+            <p>Доставим технику в течение 2 часов</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">💸</div>
+            <h3>Доступные цены</h3>
+            <p>Аренда от 30 рублей в час</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">⭐</div>
+            <h3>Качественная техника</h3>
+            <p>Только проверенные бренды</p>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h4>О компании</h4>
+                <a href="#">О нас</a>
+                <a href="#">Контакты</a>
+                <a href="#">Вакансии</a>
+                <a href="#">Партнеры</a>
+            </div>
+            <div class="footer-column">
+                <h4>Поддержка</h4>
+                <a href="#">Центр поддержки</a>
+                <a href="#">Сообщить о проблеме</a>
+                <a href="#">Статус заказа</a>
+                <a href="#">Возвраты</a>
+            </div>
+            <div class="footer-column">
+                <h4>FAQ</h4>
+                <a href="#">Частые вопросы</a>
+                <a href="#">Доставка</a>
+                <a href="#">Оплата</a>
+                <a href="#">Гарантия</a>
+            </div>
+            <div class="footer-column">
+                <h4>Покупателю</h4>
+                <a href="#">Акции</a>
+                <a href="#">Бонусная программа</a>
+                <a href="#">Подарочные карты</a>
+                <a href="#">Рассрочка</a>
+            </div>
+            <div class="footer-column">
+                <h4>Наши социальные сети</h4>
+                <div class="social-links">
+                    <a href="#">VK</a>
+                    <a href="#">TG</a>
+                    <a href="#">YT</a>
+                    <a href="#">IG</a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2025 Интернет-магазин Easy Clean. Все права защищены.
+        </div>
+    </footer>
+
+    <div id="loginModal" class="modal-overlay">
+        <div class="modal-window">
+            <button class="close-btn" onclick="closeLoginModal()">&times;</button>
+            <h2 style="text-align: center; margin-bottom: 20px; color: #2c3e50;">Вход в аккаунт</h2>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required placeholder="Введите ваш email">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Пароль:</label>
+                    <input type="password" id="password" name="password" required placeholder="Введите пароль">
+                </div>
+
+                <button type="submit" class="login-submit-btn">Войти</button>
+
+                <div class="login-links">
+                    <a href="#">Забыли пароль?</a>
+                    <span style="margin: 0 10px; color: #6c757d;">|</span>
+                    <a href="#">Регистрация</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Обновляем счетчик корзины
+        function updateCartCount() {
+            const cart = localStorage.getItem('cart');
+            const cartItems = cart ? JSON.parse(cart) : [];
+            const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+            const cartCountElement = document.getElementById('cart-count');
+            if (cartCountElement) {
+                cartCountElement.textContent = totalItems;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCartCount();
+        });
+
+        function openLoginModal() {
+            const modal = document.getElementById('loginModal');
+            if (modal) {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        // Функция для закрытия модального окна
+        function closeLoginModal() {
+            const modal = document.getElementById('loginModal');
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Закрытие по клику вне окна
+        document.addEventListener('click', function(event) {
+            const modal = document.getElementById('loginModal');
+            if (event.target === modal) {
+                closeLoginModal();
+            }
+        });
+
+        // Закрытие по ESC
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeLoginModal();
+            }
+        });
+
+        // Обработка формы входа
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const submitBtn = this.querySelector('.login-submit-btn');
+            submitBtn.textContent = 'Вход...';
+            submitBtn.disabled = true;
+
+            setTimeout(() => {
+                alert('Вход выполнен успешно!');
+                closeLoginModal();
+                submitBtn.textContent = 'Войти';
+                submitBtn.disabled = false;
+            }, 1500);
+        });
+    </script>
+</body>
+</html>
